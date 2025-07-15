@@ -106,3 +106,17 @@ def referral():
 
 if __name__ == "__main__":
     app.run(debug=True)
+@app.route("/get_all_users", methods=["GET"])
+def get_all_users():
+    admin_key = request.args.get("key")
+    if admin_key != "mysecret123":
+        return jsonify({"error": "Unauthorized"}), 401
+
+    conn = sqlite3.connect('dicemint.db')
+    c = conn.cursor()
+    c.execute("SELECT telegram_id, balance FROM balances")
+    rows = c.fetchall()
+    conn.close()
+
+    users = [{"telegram_id": row[0], "balance": row[1]} for row in rows]
+    return jsonify(users)
