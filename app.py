@@ -104,8 +104,6 @@ def referral():
 
     return jsonify({"status": "success", "message": "Referral successful"}), 200
 
-if __name__ == "__main__":
-    app.run(debug=True)
 @app.route("/get_all_users", methods=["GET"])
 def get_all_users():
     admin_key = request.args.get("key")
@@ -120,3 +118,7 @@ def get_all_users():
 
     users = [{"telegram_id": row[0], "balance": row[1]} for row in rows]
     return jsonify(users)
+
+# --- Start Server ---
+if __name__ == "__main__":
+    app.run(debug=True)
